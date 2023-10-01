@@ -1,0 +1,27 @@
+version: "3.8"
+services:
+  front:
+    build: ./
+    ports:
+      - "5000"
+    networks:
+      - frontn
+      
+  db:
+    build: ./basededatos
+    restart: always
+    volumes:
+       - dbsql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: hola
+    ports:
+      - "3306"
+    networks:
+      - frontn
+
+volumes:
+  dbsql:
+    name: dbsql
+
+networks:
+  frontn:
