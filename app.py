@@ -15,11 +15,10 @@ def openConnection():
     global conn
     # conn = mysql.connector.connect(host="localhost",user="root",password="",database="co-co")
     conn = mysql.connector.connect(
-        host="localhost",  # local
-        #host="db", # contenedor
+        #host="localhost",  # local
+        host="db", # contenedor
         user="root",
-        #password="hola",  
-        password="",
+        password="hola",
         database="coandco"
     )
 
@@ -362,7 +361,7 @@ def intereses():
                 categoria += ", "
             i += 1
         global creador, proyecto_actual
-        #sender(listado_correos, categoria, creador, proyecto_actual)
+        sender(listado_correos, categoria, creador, proyecto_actual)
 
         return redirect("/usuario")
 
