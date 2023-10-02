@@ -35,18 +35,9 @@
         }
 
         body {
-            background-image: url("/static/ufm.jpeg");
-            background-repeat: no-repeat;
+            background-image: url("/static/imagen4.jpg");
             background-attachment: fixed;
-            box-sizing: border-box;
-            width: 100%;
-            margin-top: 30px;
-            font-family: "Roboto";
-            font-weight: 500;
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-            background-size: 1500px 850px;
+            background-size: cover;
 
         }
 
@@ -88,6 +79,21 @@
             background-color: #CF1B1B;
         }
 
+        .form input[type="date"] {
+            width: 100%;
+            height: 100%;
+            color:aliceblue;
+            padding-top: 15px;
+            border: none;
+            outline: none;
+            background-color: #CF1B1B;
+        }
+
+        .form input[type="date"]:focus {
+            color:rgb(228, 228, 33);;
+            
+        }
+
         .form label {
             position: absolute;
             bottom: 0px; 
@@ -115,6 +121,12 @@
             bottom: 5px;
             left: 0px;
             transition: all 0.3s, ease;
+            color: aliceblue;
+        }
+
+        .content-name-fecha {
+            transform: translateY(-150%);
+            font-size: 14px;
             color: aliceblue;
         }
 
@@ -153,6 +165,7 @@
 
 
     </style>
+    
     <body>
         <img src="/static/logo.png" width="400" height="200" style = "background-repeat: no-repeat; ">
         <div class = "card">
@@ -178,38 +191,10 @@
                 </div>
                 <div class = "row">
                     <div class = "col">
-                        <div class = "form" style = "width: 96%;">
-                            <input type = "text" name = "email" autocomplete="off" required />
-                            <label for = "email" class = "label-name">
-                                <span class = "content-name">Correo</span>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class = "row">
-                    <div class = "col">
                         <div class = "form">
-                            <input type = "text" name = "password" autocomplete="off" required />
-                            <label for = "password" class = "label-name">
-                                <span class = "content-name">Contraseña</span>
-                            </label>
-                        </div>
-                    </div>
-                    <div class = "col">
-                        <div class = "form">
-                            <input type = "text" name = "carrera" autocomplete="off" required />
-                            <label for = "carrera" class = "label-name">
-                                <span class = "content-name">Carrera</span>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class = "row">
-                    <div class = "col">
-                        <div class = "form">
-                            <input type = "text" name = "carnet" autocomplete="off" required />
-                            <label for = "carnet" class = "label-name">
-                                <span class = "content-name">Carnet</span>
+                            <input type = "date" name = "birth_date" autocomplete="off" required />
+                            <label for = "birth_date" >
+                                <span class = "content-name-fecha">Fecha de nacimiento</span>
                             </label>
                         </div>
                     </div>
@@ -224,22 +209,25 @@
                 </div>
                 <div class = "row">
                     <div class = "col">
-                        <div class = "form">
-                            <input type = "text" name = "semestre" autocomplete="off" required />
-                            <label for = "semestre" class = "label-name">
-                                <span class = "content-name">Semestre</span>
-                            </label>
-                        </div>
-                    </div>
-                    <div class = "col">
-                        <div class = "form">
-                            <input type = "text" name = "birth_date" autocomplete="off" required />
-                            <label for = "birth_date" class = "label-name">
-                                <span class = "content-name">Fecha de nacimiento</span>
+                        <div class = "form" style = "width: 96%;">
+                            <input type = "text" name = "email" autocomplete="off" required />
+                            <label for = "email" class = "label-name">
+                                <span class = "content-name">Correo</span>
                             </label>
                         </div>
                     </div>
                 </div>
+                <div class = "row">
+                    <div class = "col">
+                        <div class = "form" style = "width: 96%;">
+                            <input type = "text" name = "password" autocomplete="off" required />
+                            <label for = "password" class = "label-name">
+                                <span class = "content-name">Contraseña</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
                 <br>
                 <a href = /especialidades><button type = "submit" class = "btn_signup">Registrarse</button></a>
                 <br>

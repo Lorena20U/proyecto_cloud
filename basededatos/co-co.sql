@@ -60,7 +60,8 @@ CREATE TABLE `proyectos` (
   `objetivo` varchar(50) NOT NULL,
   `descripcion` varchar(150) NOT NULL,
   `fecha_cierre` varchar(225) NOT NULL,
-  `visible` int(11) NOT NULL
+  `visible` int(11) NOT NULL,
+  `cupo` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -81,7 +82,7 @@ CREATE TABLE `proyecto_intereses` (
 --
 
 CREATE TABLE `tag` (
-  `carne_u` int(11) NOT NULL,
+  `id_u` int(11) NOT NULL,
   `tag_t` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -92,13 +93,11 @@ CREATE TABLE `tag` (
 --
 
 CREATE TABLE `usuario` (
-  `carne` int(11) NOT NULL,
+  `id` int(11) NOT NULL,
   `nombre` varchar(44) DEFAULT NULL,
   `apellido` varchar(44) DEFAULT NULL,
   `mail` varchar(225) DEFAULT NULL,
-  `carrera` varchar(50) NOT NULL,
   `tel` int(11) DEFAULT NULL,
-  `semestre` int(11) DEFAULT NULL,
   `birth` varchar(11) DEFAULT NULL,
   `password` varchar(225) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -142,14 +141,14 @@ ALTER TABLE `proyecto_intereses`
 -- Indexes for table `tag`
 --
 ALTER TABLE `tag`
-  ADD KEY `carne_u` (`carne_u`),
+  ADD KEY `id_u` (`id_u`),
   ADD KEY `tag_t` (`tag_t`);
 
 --
 -- Indexes for table `usuario`
 --
 ALTER TABLE `usuario`
-  ADD PRIMARY KEY (`carne`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `usuario_proyecto`
@@ -161,6 +160,12 @@ ALTER TABLE `usuario_proyecto`
 --
 -- AUTO_INCREMENT for dumped tables
 --
+
+--
+-- AUTO_INCREMENT for table `usuario`
+--
+ALTER TABLE `usuario`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `intereses`
@@ -182,7 +187,7 @@ ALTER TABLE `proyectos`
 -- Constraints for table `proyectos`
 --
 ALTER TABLE `proyectos`
-  ADD CONSTRAINT `proyectos_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`carne`);
+  ADD CONSTRAINT `proyectos_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`);
 
 --
 -- Constraints for table `proyecto_intereses`
@@ -195,14 +200,14 @@ ALTER TABLE `proyecto_intereses`
 -- Constraints for table `tag`
 --
 ALTER TABLE `tag`
-  ADD CONSTRAINT `tag_ibfk_1` FOREIGN KEY (`carne_u`) REFERENCES `usuario` (`carne`),
+  ADD CONSTRAINT `tag_ibfk_1` FOREIGN KEY (`id_u`) REFERENCES `usuario` (`id`),
   ADD CONSTRAINT `tag_ibfk_2` FOREIGN KEY (`tag_t`) REFERENCES `intereses` (`id`);
 
 --
 -- Constraints for table `usuario_proyecto`
 --
 ALTER TABLE `usuario_proyecto`
-  ADD CONSTRAINT `usuario_proyecto_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`carne`),
+  ADD CONSTRAINT `usuario_proyecto_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`),
   ADD CONSTRAINT `usuario_proyecto_ibfk_2` FOREIGN KEY (`id_proyecto`) REFERENCES `proyectos` (`id_proyecto`);
 COMMIT;
 

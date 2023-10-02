@@ -15,22 +15,23 @@ def openConnection():
     global conn
     # conn = mysql.connector.connect(host="localhost",user="root",password="",database="co-co")
     conn = mysql.connector.connect(
-        # host="localhost",  # local
-        host="db", # contenedor
+        host="localhost",  # local
+        #host="db", # contenedor
         user="root",
-        password="hola",  
+        #password="hola",  
+        password="",
         database="coandco"
     )
 
-def verificar_credenciales(carne, password):
+def verificar_credenciales(email, password):
     openConnection()
     global conn
     cursor = conn.cursor()
-    select_query = "SELECT * FROM usuario WHERE carne = %s AND password = %s"
-    cursor.execute(select_query, (carne, password))
-    user = cursor.fetchone()
+    select_query = "SELECT id FROM usuario WHERE mail = %s AND password = %s"
+    cursor.execute(select_query, (email, password))
+    id_u = cursor.fetchone()[0]
     conn.close()
-    return user is not None
+    return id_u
 
 @app.route("/")
 def homePage():
@@ -45,21 +46,17 @@ def signup():
         last_name = request.form['l_name']
         e_mail = request.form['email']
         password = request.form['password']
-        carrera = request.form['carrera']
-        carne = request.form['carnet']
         # Atributos no pedidos en la página aún.
         celphone = request.form['cel']
-        semester = request.form['semestre']
         date_birth = request.form['birth_date']
 
         creador['name'] = name
         creador['last_name'] = last_name
         creador['e_mail'] = e_mail
-        creador['carrera'] = carrera
         creador['celphone'] = celphone
         
 
-        if name and last_name and e_mail and password and carrera and carne and celphone and semester and date_birth:
+        if name and last_name and e_mail and password and celphone and date_birth:
             #newUser = Usuario(carnet, name, last_name, e_mail, celphone, carrera, semester, date_birth, password)
             openConnection()
             global conn
@@ -72,7 +69,7 @@ def signup():
             for row in records:
                 print(row[0])
                 print(type(row[0]))
-                if(row[0] == int(carne)):
+                if(row[0] == e_mail):
                     print("entre al if grande")
                     bandera = 0
                     break
@@ -84,12 +81,19 @@ def signup():
             else:
                 #insert
                 print(bandera)
-                inquery = "INSERT INTO `usuario`(`carne`, `nombre`, `apellido`, `mail`, `carrera`, `tel`, `semestre`, `birth`, `password`) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)"
-                cursor.execute(inquery, (carne, name, last_name, e_mail, carrera, celphone, semester, date_birth, password))
+                inquery = "INSERT INTO `usuario`(`id`, `nombre`, `apellido`, `mail`, `tel`, `birth`, `password`) VALUES (NULL,%s,%s,%s,%s,%s,%s)"
+                cursor.execute(inquery, (name, last_name, e_mail, celphone, date_birth, password))
                 conn.commit()
+
+                selectquery = "SELECT id FROM usuario WHERE mail = %s"
+                print(selectquery)
+                cursor.execute(selectquery, (e_mail,))
+                id_u = -1
+                id_u = cursor.fetchone()
+                print(id_u)
             cursor.close()
             conn.close()
-            return redirect(url_for('autenticacion',carne = carne, bandera = 0), 301)
+            return redirect(url_for('autenticacion',id_u = id_u, bandera = 0), 301)
     csss = url_for('static', filename="style.css")
     logo = url_for('static', filename="logo.png")
     return render_template("sign_up.html", csss = csss, logo=logo)
@@ -98,10 +102,14 @@ def signup():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
-        carne = request.form.get("carnet", "")
+        email = request.form.get("correo", "")
         password = request.form.get("password", "")
-        if verificar_credenciales(carne, password):
-            session['Logged_in'] = carne
+        id_u = verificar_credenciales(email, password)
+        print("Esto es el idddddd")
+        print(id_u)
+        if id_u != None:
+            print("entreeeeeee")
+            session['Logged_in'] = id_u
             return redirect("/usuario", code=301)
         else:
             return redirect("/signup", code=301)
@@ -109,8 +117,8 @@ def login():
 
 @app.route("/autenticacion")
 def autenticacion():
-    session['Logged_in'] = request.args.get('carne')
-    carne = request.args.get('carne')
+    session['Logged_in'] = request.args.get('id_u')
+    id_u = request.args.get('id_u')
     bandera = int(request.args.get('bandera'))
     if bandera == 0:
         print("usuario conectado: " + str(session['Logged_in']))
@@ -148,7 +156,7 @@ def especialidades():
         if "Logged_in" in session:
             Logged_in = session["Logged_in"]
         for var in lista_intereses:
-            query = "INSERT INTO `tag`(`carne_u`, `tag_t`) VALUES (%s,%s)"
+            query = "INSERT INTO `tag`(`id_u`, `tag_t`) VALUES (%s,%s)"
             cursor.execute(query, (Logged_in, var))
             conn.commit()
         conn.close()
@@ -166,8 +174,9 @@ def usuario():
     global conn
     if "Logged_in" in session:
         Logged_in = session["Logged_in"]
+    print(Logged_in)
     cursor = conn.cursor()
-    query = "SELECT usuario.carne, usuario.nombre, usuario.apellido, usuario.mail, usuario.carrera, usuario.tel, usuario.semestre, usuario.birth FROM usuario WHERE usuario.carne = %s"
+    query = "SELECT usuario.id, usuario.nombre, usuario.apellido, usuario.mail, usuario.tel, usuario.birth FROM usuario WHERE usuario.id = %s"
     adr = (str(Logged_in), )
     cursor.execute(query, adr)
     datos = cursor.fetchall()
@@ -177,12 +186,10 @@ def usuario():
         user['nombre'] = row[1]
         user['apellido'] = row[2]
         user['mail'] = row[3]
-        user['carrera'] = row[4]
-        user['telefono'] = row[5]
-        user['semestre'] = row[6]
-        user['cumpleaños'] = row[7]
+        user['telefono'] = row[4]
+        user['cumpleaños'] = row[5]
     user['intereses'] = []
-    query = "SELECT usuario.carne, intereses.descripcion FROM usuario, intereses, tag WHERE usuario.carne = tag.carne_u AND intereses.id = tag.tag_t AND usuario.carne = %s"
+    query = "SELECT usuario.id, intereses.descripcion FROM usuario, intereses, tag WHERE usuario.id = tag.id_u AND intereses.id = tag.tag_t AND usuario.id = %s"
     adr = (str(Logged_in), )
     cursor.execute(query, adr)
     intereses = cursor.fetchall()
@@ -206,6 +213,7 @@ def usuario():
         proyectos[str(row[0])]['objetivo'] = row[2]
         proyectos[str(row[0])]['descripción'] = row[3]
         proyectos[str(row[0])]['fecha de cierre'] = row[4]
+    print(proyectos)
     conn.close()
     #record se manda al html para mostrar lo datos
     csss = url_for('static', filename="style_perfil.css")
@@ -309,14 +317,14 @@ def intereses():
             query = "INSERT INTO `proyecto_intereses`(`id_proyecto`, `id_interes`) VALUES (%s,%s)"
             cursor.execute(query, (idproyecto, var))
             conn.commit()
-        opquery = "SELECT usuario.mail FROM usuario WHERE usuario.carne = %s"
+        opquery = "SELECT usuario.mail FROM usuario WHERE usuario.id = %s"
         adr = (str(Logged_in), )
         cursor.execute(opquery, adr)
         idpro = cursor.fetchall()
         mail = ""
         for row in idpro:
             mail = row[0]
-        selquery = "SELECT DISTINCT proyectos.id_proyecto, proyectos.nombre, usuario.mail FROM proyectos, usuario, usuario_proyecto, tag, intereses, proyecto_intereses WHERE proyectos.id_proyecto = proyecto_intereses.id_proyecto AND proyecto_intereses.id_interes = tag.tag_t AND tag.carne_u = usuario.carne AND proyectos.id_proyecto = %s AND usuario.mail <> %s"
+        selquery = "SELECT DISTINCT proyectos.id_proyecto, proyectos.nombre, usuario.mail FROM proyectos, usuario, usuario_proyecto, tag, intereses, proyecto_intereses WHERE proyectos.id_proyecto = proyecto_intereses.id_proyecto AND proyecto_intereses.id_interes = tag.tag_t AND tag.id_u = usuario.id AND proyectos.id_proyecto = %s AND usuario.mail <> %s"
         id_proyecto = (int(idproyecto), str(mail), )
         cursor.execute(selquery, id_proyecto)
         correos = cursor.fetchall()
@@ -354,7 +362,7 @@ def intereses():
                 categoria += ", "
             i += 1
         global creador, proyecto_actual
-        sender(listado_correos, categoria, creador, proyecto_actual)
+        #sender(listado_correos, categoria, creador, proyecto_actual)
 
         return redirect("/usuario")
 
@@ -366,4 +374,4 @@ def intereses():
 
 
 if __name__ == "__main__":
-    app.run(host = "0.0.0.0", debug = True)
+    app.run(host = "localhost", debug = True)
