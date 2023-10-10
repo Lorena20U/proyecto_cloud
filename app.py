@@ -15,11 +15,11 @@ def openConnection():
     global conn
     # conn = mysql.connector.connect(host="localhost",user="root",password="",database="co-co")
     conn = mysql.connector.connect(
-        host="localhost",  # local
-        #host="db", # contenedor
+        # host="localhost",  # local
+        host="db", # contenedor
         user="root",
-        #password="hola",
-        password="",
+        password="hola",
+        # password="",
         database="coandco"
     )
 
@@ -281,6 +281,7 @@ def proyecto():
         objetivo = request.form['objetivo']
         descripcion = request.form['descri']
         fecha_cierre = request.form['fecha']
+        cupo = request.form['cupo']
         visible = 1
         print(name, objetivo, descripcion, fecha_cierre)
 
@@ -288,13 +289,14 @@ def proyecto():
         proyecto_actual['objetivo'] = objetivo
         proyecto_actual['descripcion'] = descripcion
         proyecto_actual['fecha_cierre'] = fecha_cierre
+        proyecto_actual['cupo'] = cupo
 
         if name and objetivo and descripcion and fecha_cierre:
             openConnection()
             global conn
             cursor = conn.cursor()
-            inquery = "INSERT INTO `proyectos`(`id_proyecto`, `id_usuario`, `nombre`, `objetivo`, `descripcion`, `fecha_cierre`, `visible`) VALUES (NULL,%s,%s,%s,%s,%s,%s)"
-            cursor.execute(inquery, (Logged_in, name, objetivo, descripcion, fecha_cierre, visible))
+            inquery = "INSERT INTO `proyectos`(`id_proyecto`, `id_usuario`, `nombre`, `objetivo`, `descripcion`, `fecha_cierre`, `visible`, `cupo`) VALUES (NULL,%s,%s,%s,%s,%s,%s,%s)"
+            cursor.execute(inquery, (Logged_in, name, objetivo, descripcion, fecha_cierre, visible, cupo))
             conn.commit()
             opquery = "SELECT proyectos.id_proyecto FROM proyectos ORDER BY proyectos.id_proyecto DESC LIMIT 1"
             cursor.execute(opquery)
