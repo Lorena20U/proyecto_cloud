@@ -7,17 +7,15 @@ services:
     networks:
       - frontn
       
-  db:
-    build: ./basededatos
+  myphp:
+    image: phpmyadmin:latest
     restart: always
-    volumes:
-       - dbsql:/var/lib/mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: hola
     ports:
-      - "3306"
+      -"8080:8080"
     networks:
       - frontn
+    environment:
+      - PMA_ARBITRARY=1
 
 volumes:
   dbsql:
