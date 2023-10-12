@@ -6,6 +6,13 @@ services:
       - "5000:5000"
     networks:
       - frontn
+    depends_on:
+      - initdb
+    environment:
+      - DB_HOST=database-1.c9yjy3nmd8az.us-east-1.rds.amazonaws.com
+      - DB_USER=proyectocoandco
+      - DB_PASSWORD=hola1234
+      - DB_NAME=database-1
       
   myphp:
     image: phpmyadmin:latest
@@ -16,10 +23,16 @@ services:
       - frontn
     environment:
       - PMA_ARBITRARY=1
-
-volumes:
-  dbsql:
-    name: dbsql
-
+    depends_on:
+      - initdb 
+      
+  initdb:
+    image: mysql:8.0
+    volumes:
+      - ./basededatos:/docker-entrypoint-initdb.d
+    command: ["mysql", "-h", "database-1.c9yjy3nmd8az.us-east-1.rds.amazonaws.com", "-u", "proyectocoandco", "-p", "hola1234", "database-1", "<", "/docker-entrypoint-initdb.d/co-co.sql"]
+    networks:
+      - frontn
+      
 networks:
   frontn:
