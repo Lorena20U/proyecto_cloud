@@ -30,7 +30,7 @@ SET time_zone = "+00:00";
 -- Table structure for table `intereses`
 --
 
-CREATE TABLE `intereses` (
+CREATE TABLE IF NOT EXISTS `intereses` (
   `id` int(11) NOT NULL,
   `descripcion` varchar(225) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -53,7 +53,7 @@ INSERT INTO `intereses` (`id`, `descripcion`) VALUES
 -- Table structure for table `proyectos`
 --
 
-CREATE TABLE `proyectos` (
+CREATE TABLE IF NOT EXISTS `proyectos` (
   `id_proyecto` int(11) NOT NULL,
   `id_usuario` int(11) NOT NULL,
   `nombre` varchar(50) NOT NULL,
@@ -70,7 +70,7 @@ CREATE TABLE `proyectos` (
 -- Table structure for table `proyecto_intereses`
 --
 
-CREATE TABLE `proyecto_intereses` (
+CREATE TABLE IF NOT EXISTS `proyecto_intereses` (
   `id_proyecto` int(11) DEFAULT NULL,
   `id_interes` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -81,7 +81,7 @@ CREATE TABLE `proyecto_intereses` (
 -- Table structure for table `tag`
 --
 
-CREATE TABLE `tag` (
+CREATE TABLE IF NOT EXISTS `tag` (
   `id_u` int(11) NOT NULL,
   `tag_t` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -92,7 +92,7 @@ CREATE TABLE `tag` (
 -- Table structure for table `usuario`
 --
 
-CREATE TABLE `usuario` (
+CREATE TABLE IF NOT EXISTS `usuario` (
   `id` int(11) NOT NULL,
   `nombre` varchar(44) DEFAULT NULL,
   `apellido` varchar(44) DEFAULT NULL,
@@ -108,7 +108,7 @@ CREATE TABLE `usuario` (
 -- Table structure for table `usuario_proyecto`
 --
 
-CREATE TABLE `usuario_proyecto` (
+CREATE TABLE IF NOT EXISTS `usuario_proyecto` (
   `id_usuario` int(11) DEFAULT NULL,
   `id_proyecto` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
