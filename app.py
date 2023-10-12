@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, url_for, redirect, session
 from jinja2 import Template, FileSystemLoader, Environment
 import mysql.connector
 from correos import sender
+import os
 
 app = Flask(__name__)
 templates = FileSystemLoader('templates')
@@ -16,11 +17,11 @@ def openConnection():
     # conn = mysql.connector.connect(host="localhost",user="root",password="",database="co-co")
     conn = mysql.connector.connect(
         # host="localhost",  # local
-        host="db", # contenedor
-        user="root",
-        password="hola",
+        host = os.environ['DB_HOST'], # contenedor
+        user = os.environ['DB_USER'],
+        password = os.environ['DB_PASSWORD'],
         # password="",
-        database="coandco"
+        database = os.environ['DB_NAME']
     )
 
 def verificar_credenciales(email, password):
