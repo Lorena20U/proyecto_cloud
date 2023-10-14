@@ -202,11 +202,6 @@ def usuario():
     adr = (str(Logged_in), )
     cursor.execute(query, adr)
     info_proyecto = cursor.fetchall()
-    #info_proyecto_ = {}
-    #PROBABLEMENTE EL ID_PROYECTO venga en la variable info_proyecto
-    #entonces tal vez sea que lo de id_proyecto = row[0] siempre
-    # y ya lo demás sea un row[n+1]
-
     proyectos = {}
     for row in info_proyecto:
         proyectos[str(row[0])] = {}
@@ -222,53 +217,46 @@ def usuario():
     return render_template("usuario.html", csss = csss, js = js, user = user, proyectos = proyectos) 
 
 #En este nedpoint se van a obtener todos las conferencias que al usuario le interese
-# @app.route("/usuario_conferencias_intereses", methods = ["GET", "POST"])
-# def usuario_conferencias_intereses():
-#     openConnection()
-#     global conn
-#     if "Logged_in" in session:
-#         Logged_in = session["Logged_in"]
-#     print(Logged_in)
+@app.route("/usuario_conferencias_intereses", methods = ["GET", "POST"])
+def usuario_conferencias_intereses():
+    openConnection()
+    global conn
+    if "Logged_in" in session:
+        Logged_in = session["Logged_in"]
+    print(Logged_in)
 
-    # cursor = conn.cursor()
-    # user = {}
-    # user['intereses'] = []
-    # query = "SELECT usuario.id, intereses.descripcion FROM usuario, intereses, tag WHERE usuario.id = tag.id_u AND intereses.id = tag.tag_t AND usuario.id = %s"
-    # adr = (str(Logged_in), )
-    # cursor.execute(query, adr)
-    # intereses = cursor.fetchall()
-    # for row in intereses:
-        # print("carne de usuario:", row[0]) # esta no es necesaria. solo usen la de abajo. 
-        # print("descipción: nombre de interes:", row[1]) 
-    #     user['intereses'].append(row[0])
-    # print("AQUI")
-    # print(tuple(user['intereses']))
-    # l = user['intereses']
-    # params = {'l': tuple(user['intereses'])}
-    #query = "SELECT id_proyecto FROM proyecto_intereses WHERE `id_intereses` in %{l}s"
-    #query = "SELECT proyectos.id_proyecto, proyectos.nombre, proyectos.objetivo, proyectos.descripcion, proyectos.fecha_cierre, proyectos.cupo FROM proyectos, proyecto_intereses WHERE `id_usuario` = %s"
-    # cursor.execute("SELECT id_proyecto FROM proyecto_intereses WHERE `id_interes` =  %i", l)
-    # info_proyectos_intereses = cursor.fetchall()
-    # print(info_proyectos_intereses)
-    #info_proyecto_ = {}
-    #PROBABLEMENTE EL ID_PROYECTO venga en la variable info_proyecto
-    #entonces tal vez sea que lo de id_proyecto = row[0] siempre
-    # y ya lo demás sea un row[n+1]
+    cursor = conn.cursor()
+    user = {}
+    user['intereses'] = []
+    query = "SELECT intereses.id, intereses.descripcion FROM usuario, intereses, tag WHERE usuario.id = tag.id_u AND intereses.id = tag.tag_t AND usuario.id = %s"
+    adr = (str(Logged_in), )
+    cursor.execute(query, adr)
+    intereses = cursor.fetchall()
+    for row in intereses:
+        user['intereses'].append(row[0])
+    query = "SELECT proyectos.id_proyecto, proyectos.nombre, proyectos.objetivo, proyectos.descripcion, proyectos.fecha_cierre, proyectos.cupo FROM proyectos INNER JOIN proyecto_intereses ON proyecto_intereses.id_proyecto=proyectos.id_proyecto  WHERE proyecto_intereses.id_interes IN (%s) AND proyectos.id_usuario != " + str(Logged_in)
 
-    # proyectos = {}
-    # for row in info_proyecto:
-    #     proyectos[str(row[0])] = {}
-    #     proyectos[str(row[0])]['nombre proyecto'] = row[1]
-    #     proyectos[str(row[0])]['objetivo'] = row[2]
-    #     proyectos[str(row[0])]['descripción'] = row[3]
-    #     proyectos[str(row[0])]['fecha de cierre'] = row[4]
-    # print(proyectos)
+    intereses_param = ', '.join(['%s'] * len(tuple(user['intereses'])))
+    query = query % intereses_param
+
+    cursor.execute(query, tuple(user['intereses']))
+    info_proyectos_intereses = cursor.fetchall()
+
+    proyectos = {}
+    for row in info_proyectos_intereses:
+        proyectos[str(row[0])] = {}
+        proyectos[str(row[0])]['nombre proyecto'] = row[1]
+        proyectos[str(row[0])]['objetivo'] = row[2]
+        proyectos[str(row[0])]['descripción'] = row[3]
+        proyectos[str(row[0])]['fecha de cierre'] = row[4]
+        proyectos[str(row[0])]['cupo'] = row[5]
+    print(proyectos)
     
     conn.close()
     #record se manda al html para mostrar lo datos
     csss = url_for('static', filename="style_perfil.css")
     js = url_for('static', filename = "main.js")
-    return render_template("conferencias_intereses.html", csss = csss, js = js, user = user) 
+    return render_template("conferencias_intereses.html", csss = csss, js = js, user = user, proyectos = proyectos) 
 
 @app.route("/crear_proyecto", methods = ["GET", "POST"])
 def proyecto():
@@ -414,7 +402,7 @@ def intereses():
                 categoria += ", "
             i += 1
         global creador, proyecto_actual
-        sender(listado_correos, categoria, creador, proyecto_actual)
+        #sender(listado_correos, categoria, creador, proyecto_actual)
 
         return redirect("/usuario")
 
