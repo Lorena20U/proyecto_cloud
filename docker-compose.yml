@@ -12,27 +12,31 @@ services:
       - DB_HOST=database-1.c9yjy3nmd8az.us-east-1.rds.amazonaws.com
       - DB_USER=proyectocoandco
       - DB_PASSWORD=hola1234
-      - DB_NAME=database-1
+      - DB_NAME=coandco
       
-  myphp:
+  phpmyadmin:
     image: phpmyadmin:latest
     restart: always
     ports:
-      -"8080:8080"
+      - 9001:80
     networks:
       - frontn
+    depends_on:
+      - initdb
     environment:
       - PMA_ARBITRARY=1
-    depends_on:
-      - initdb 
+      - PMA_HOST=database-1.c9yjy3nmd8az.us-east-1.rds.amazonaws.com
+      - PMA_USER=proyectocoandco
+      - PMA_PASSWORD=hola1234
       
   initdb:
-    image: mysql:8.0
+    image: alpine:latest
+    command: ["sh", "-c", "apk add --no-cache mysql-client && mysql -h database-1.c9yjy3nmd8az.us-east-1.rds.amazonaws.com -u proyectocoandco -phola1234 < /docker-entrypoint-initdb.d/co-co.sql"]
     volumes:
-      - ./basededatos:/docker-entrypoint-initdb.d
-    command: ["mysql", "-h", "database-1.c9yjy3nmd8az.us-east-1.rds.amazonaws.com", "-u", "proyectocoandco", "-p", "hola1234", "database-1", "<", "/docker-entrypoint-initdb.d/co-co.sql"]
+      - ./basededatos/co-co.sql:/docker-entrypoint-initdb.d/co-co.sql
     networks:
       - frontn
-      
+
 networks:
   frontn:
+
