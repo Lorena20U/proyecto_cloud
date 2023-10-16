@@ -231,6 +231,18 @@ def usuario_conferencias_intereses():
 
     cursor = conn.cursor()
     user = {}
+    query = "SELECT usuario.id, usuario.nombre, usuario.apellido, usuario.mail, usuario.tel, usuario.birth FROM usuario WHERE usuario.id = %s"
+    adr = (str(Logged_in), )
+    cursor.execute(query, adr)
+    datos = cursor.fetchall()
+    user = {}
+    for row in datos:
+        user['carne'] = row[0]
+        user['nombre'] = row[1]
+        user['apellido'] = row[2]
+        user['mail'] = row[3]
+        user['telefono'] = row[4]
+        user['cumpleaños'] = row[5]
     user['intereses'] = []
     query = "SELECT intereses.id, intereses.descripcion FROM usuario, intereses, tag WHERE usuario.id = tag.id_u AND intereses.id = tag.tag_t AND usuario.id = %s"
     adr = (str(Logged_in), )
@@ -254,6 +266,7 @@ def usuario_conferencias_intereses():
         proyectos[str(row[0])]['descripción'] = row[3]
         proyectos[str(row[0])]['fecha de cierre'] = row[4]
         proyectos[str(row[0])]['cupo'] = row[5]
+    print(user)
     print(proyectos)
     
     conn.close()
