@@ -1,10 +1,10 @@
 import mysql.connector
 
 config = {
-    'user': 'admin',
-    'password': 'admin123',
-    'host': 'db.c9yjy3nmd8az.us-east-1.rds.amazonaws.com',
-    'database': ''
+    'user': 'proyectocoandco',
+    'password': 'hola1234',
+    'host': 'database-1.c9yjy3nmd8az.us-east-1.rds.amazonaws.com',
+    'database': 'coandco'
 }
 
 try:

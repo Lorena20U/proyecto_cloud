@@ -155,6 +155,14 @@
       -webkit-transform: rotate(-45deg);
     }
 
+    .card-c {
+    margin: 10px; /* Agrega un espacio de 10px alrededor de cada tarjeta */
+}
+
+    .separator {
+    margin: 10px 0; /* Agrega un espacio vertical de 10px entre los elementos */
+}
+
     #about>h1 {
       color: green;
     }
@@ -207,22 +215,52 @@
 
     <!-- ======= About Section ======= -->
     <section id="about" class="about">
-
-      <h1>Proyectos</h1>
+      <h1> </h1>
+      <h1 style = "color: black;">Proyectos</h1>
 
       <div class="row row-cols-1 row-cols-md-2 g-4">
 
         {% for proyecto in proyectos.keys() %}
-        <div class="col">
-          <div class="card text-dark bg-light mb-3" style="max-width: 18rem;">
-            <div class="card-header" style = "color: black;">{{proyectos[proyecto]["fecha de cierre"]}}</div>
-            <div class="card-body">
-              <h5 class="card-title" style = "color: black;">{{proyectos[proyecto]["nombre proyecto"]}}</h5>
-              <h6 class="card-text">{{proyectos[proyecto]["objetivo"]}}</h6>
-              <p class="card-text">{{proyectos[proyecto]["descripción"]}}</p>
-            </div>
+        <div class="col-md-4">
+          <div class="card card-c">
+              <div class="card-header" style = "color: black;">{{proyectos[proyecto]["fecha de cierre"]}}</div>
+              <div class="card-body">
+                <h5 class="card-title" style = "color: black;">{{proyectos[proyecto]["nombre proyecto"]}}</h5>
+                <h6 class="card-text" style = "color: black;">{{proyectos[proyecto]["objetivo"]}}</h6>
+                <p class="card-text">{{proyectos[proyecto]["descripción"]}}</p>
+              </div>
           </div>
         </div>
+        <!-- <div class="col-md-4">
+          <div class="card card-c">
+              <div class="card-header" style = "color: black;">{{proyectos[proyecto]["fecha de cierre"]}}</div>
+              <div class="card-body">
+                <h5 class="card-title" style = "color: black;">{{proyectos[proyecto]["nombre proyecto"]}}</h5>
+                <h6 class="card-text">{{proyectos[proyecto]["objetivo"]}}</h6>
+                <p class="card-text">{{proyectos[proyecto]["descripción"]}}</p>
+              </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card card-c">
+              <div class="card-header" style = "color: black;">{{proyectos[proyecto]["fecha de cierre"]}}</div>
+              <div class="card-body">
+                <h5 class="card-title" style = "color: black;">{{proyectos[proyecto]["nombre proyecto"]}}</h5>
+                <h6 class="card-text">{{proyectos[proyecto]["objetivo"]}}</h6>
+                <p class="card-text">{{proyectos[proyecto]["descripción"]}}</p>
+              </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card card-c">
+              <div class="card-header" style = "color: black;">{{proyectos[proyecto]["fecha de cierre"]}}</div>
+              <div class="card-body">
+                <h5 class="card-title" style = "color: black;">{{proyectos[proyecto]["nombre proyecto"]}}</h5>
+                <h6 class="card-text">{{proyectos[proyecto]["objetivo"]}}</h6>
+                <p class="card-text">{{proyectos[proyecto]["descripción"]}}</p>
+              </div>
+          </div>
+        </div> -->
         {% endfor %}
 
       </div>

@@ -17,11 +17,15 @@ def openConnection():
     # conn = mysql.connector.connect(host="localhost",user="root",password="",database="co-co")
     conn = mysql.connector.connect(
         # host="localhost",  # local
-        host = os.environ['DB_HOST'], # contenedor
-        user = os.environ['DB_USER'],
-        password = os.environ['DB_PASSWORD'],
-        # password="",
-        database = os.environ['DB_NAME']
+        # host = os.environ['DB_HOST'], # contenedor
+        # user = os.environ['DB_USER'],
+        # password = os.environ['DB_PASSWORD'],
+        # # password="",
+        # database = os.environ['DB_NAME']
+        host = 'database-1.c9yjy3nmd8az.us-east-1.rds.amazonaws.com', # contenedor
+        user = 'proyectocoandco',
+        password = 'hola1234',
+        database = 'coandco'
     )
 
 def verificar_credenciales(email, password):
