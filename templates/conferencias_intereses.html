@@ -164,8 +164,8 @@
       <h1 class="logo" >CO&CO</h1>
             <nav>
                 <ul class = "nav_links">
-                    <li><a href="/crear_proyecto">Crear Proyecto</a></li>
-                    <li><a href="#">Servicios</a></li>
+                    <li><a href="/crear_proyecto">Crear Conferencia</a></li>
+                    <li><a href="/usuario">Mis Conferencias</a></li>
                     <li><a href="#">Sobre nosotros</a></li>
                 </ul>
             </nav>
@@ -199,9 +199,25 @@
 
     <!-- ======= About Section ======= -->
     <section id="about" class="about">
+      <h1> </h1>
+      <h1 style = "color: black;">Proyectos</h1>
 
-      <h1>Proyectos</h1>
+      <div class="row row-cols-1 row-cols-md-2 g-4">
 
+        {% for proyecto in proyectos.keys() %}
+        <div class="col-md-4">
+          <div class="card card-c">
+              <div class="card-header" style = "color: black;">{{proyectos[proyecto]["fecha de cierre"]}}</div>
+              <div class="card-body">
+                <h5 class="card-title" style = "color: black;">{{proyectos[proyecto]["nombre proyecto"]}}</h5>
+                <h6 class="card-text" style = "color: black;">{{proyectos[proyecto]["objetivo"]}}</h6>
+                <p class="card-text">{{proyectos[proyecto]["descripción"]}}</p>
+              </div>
+          </div>
+        </div>
+        {% endfor %}
+
+      </div>
     </section><!-- End About Section -->
 
     
