@@ -2,13 +2,17 @@ import email.utils
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import smtplib
+from dotenv import load_dotenv
+import os
 
 def sender_ses(recipent, categoria, creador, proyecto_actual):
+    load_dotenv()
+
     SENDER = "yaneth33612@gmail.com"
     SENDERNAME = "Co&Co"
     RECIPIENT = recipent
-    USERNAME_SMTP = "AKIAXPYR246ICNXEWY74"
-    PASSWORD_SMTP = "BGoCiFckyqjiCm7g+e+Dw8jEfqi3nbL9KZi3uv6UHV1Z"
+    USERNAME_SMTP = os.getenv("USERNAME_SMTP")
+    PASSWORD_SMTP = os.getenv("PASSWORD_SMTP")
     HOST = "email-smtp.us-east-1.amazonaws.com"
     PORT = 587
 
