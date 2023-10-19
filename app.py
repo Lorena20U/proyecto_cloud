@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, url_for, redirect, session
 from jinja2 import Template, FileSystemLoader, Environment
 import mysql.connector
 from correos import sender
+from cs_ses import sender_ses
 import os
 
 app = Flask(__name__)
@@ -17,15 +18,15 @@ def openConnection():
     # conn = mysql.connector.connect(host="localhost",user="root",password="",database="co-co")
     conn = mysql.connector.connect(
         # host="localhost",  # local
-        host = os.environ['DB_HOST'], # contenedor
-        user = os.environ['DB_USER'],
-        password = os.environ['DB_PASSWORD'],
-        # password="",
-        database = os.environ['DB_NAME']
-        # host = 'database-1.c9yjy3nmd8az.us-east-1.rds.amazonaws.com', # contenedor
-        # user = 'proyectocoandco',
-        # password = 'hola1234',
-        # database = 'coandco'
+        # host = os.environ['DB_HOST'], # contenedor
+        # user = os.environ['DB_USER'],
+        # password = os.environ['DB_PASSWORD'],
+        # # password="",
+        # database = os.environ['DB_NAME']
+        host = 'database-1.c9yjy3nmd8az.us-east-1.rds.amazonaws.com', # contenedor
+        user = 'proyectocoandco',
+        password = 'hola1234',
+        database = 'coandco'
     )
 
 def verificar_credenciales(email, password):
@@ -394,8 +395,7 @@ def intereses():
             listado_correos.append(row[2])
         # <-- linea para mandar los correos, la lista a utilizar es listado_correos
         print(listado_correos)
-        cursor.close()
-        conn.close()
+        
             # Preparación para mandar el correo
         categoria = ""
         i = 0
@@ -419,7 +419,22 @@ def intereses():
                 categoria += ", "
             i += 1
         global creador, proyecto_actual
-        #sender(listado_correos, categoria, creador, proyecto_actual)
+        cursor = conn.cursor()
+        query = "SELECT usuario.id, usuario.nombre, usuario.apellido, usuario.mail, usuario.tel, usuario.birth FROM usuario WHERE usuario.id = %s"
+        adr = (str(Logged_in), )
+        cursor.execute(query, adr)
+        datos = cursor.fetchall()
+        user = {}
+        for row in datos:
+            user['carne'] = row[0]
+            user['name'] = row[1]
+            user['last_name'] = row[2]
+            user['e_mail'] = row[3]
+            user['celphone'] = row[4]
+            user['cumpleaños'] = row[5]
+        cursor.close()
+        conn.close()
+        sender_ses(listado_correos, categoria, user, proyecto_actual)
 
         return redirect("/usuario")
 
