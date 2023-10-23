@@ -2,3 +2,4 @@ secure-smtplib
 mysql-connector-python
 Jinja2
 flask
+python-dotenv
