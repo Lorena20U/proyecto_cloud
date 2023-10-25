@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: initdb
+  name: initdb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: initdb
+  template:
+    metadata:
+      labels:
+        app: initdb
+    spec:
+      containers:
+      - image: lorena612/bd-coandco:v1
+        name: initdb

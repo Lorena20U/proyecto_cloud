@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: front
+  name: front
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: front
+  template:
+    metadata:
+      labels:
+        app: vote
+    spec:
+      containers:
+      - image: lorena612/front-coandco:v1
+        name: front
+        env:
+        - name: DB_HOST
+          value: database-1.c9yjy3nmd8az.us-east-1.rds.amazonaws.com
+        - name: DB_USER
+          value: proyectocoandco
+        - name: DB_PASSWORD
+          value: hola1234
+        - name: DB_NAME
+          value: coandco
+        ports:
+        - containerPort: 5000
+          name: front
