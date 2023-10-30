@@ -13,6 +13,7 @@ services:
       - DB_USER=proyectocoandco
       - DB_PASSWORD=hola1234
       - DB_NAME=coandco
+      - API_URL=https://n0g86wyeq5.execute-api.us-east-1.amazonaws.com/app
       
   initdb:
     image: lorena612/bd-coandco:v1

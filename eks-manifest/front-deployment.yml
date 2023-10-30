@@ -26,6 +26,8 @@ spec:
           value: hola1234
         - name: DB_NAME
           value: coandco
+        - name: API_URL
+          value: https://n0g86wyeq5.execute-api.us-east-1.amazonaws.com/app
         ports:
         - containerPort: 5000
           name: front
