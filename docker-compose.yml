@@ -17,6 +17,10 @@ services:
       
   initdb:
     image: lorena612/bd-coandco:v1
+    environment:
+      - HOST=database-1.c9yjy3nmd8az.us-east-1.rds.amazonaws.com
+      - USER=proyectocoandco
+      - PASSWORD=hola1234
     networks:
       - frontn
 

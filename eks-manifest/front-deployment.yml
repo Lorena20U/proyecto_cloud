@@ -12,7 +12,7 @@ spec:
   template:
     metadata:
       labels:
-        app: vote
+        app: front
     spec:
       containers:
       - image: lorena612/front-coandco:v1

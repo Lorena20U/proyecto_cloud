@@ -17,3 +17,10 @@ spec:
       containers:
       - image: lorena612/bd-coandco:v1
         name: initdb
+        env:
+        - name: HOST
+          value: database-1.c9yjy3nmd8az.us-east-1.rds.amazonaws.com
+        - name: USER
+          value: proyectocoandco
+        - name: PASSWORD
+          value: hola1234
