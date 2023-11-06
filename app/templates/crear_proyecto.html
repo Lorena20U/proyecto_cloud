@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Rubik:ital@1&display=swap');
+       
+       h1{
+            cursor: pointer;
+            font-size: 30px;
+            font-family: "Roboto";
+            font-weight: 500;
+            color: rgb(228, 228, 33);
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .card {
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+            transition: 0.3s;
+            background-color: #CF1B1B;
+            margin-left: 35%;
+            margin-right: 35%;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-around;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+        }
+
+        .container {
+            padding: 2px 16px;
+        }
+
+        body {
+            background-image: url("/static/ufm.jpeg");
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            box-sizing: border-box;
+            width: 100%;
+            margin-top: 30px;
+            font-family: "Roboto";
+            font-weight: 500;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            background-size: 1500px 850px;
+
+        }
+
+        img {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .two_row input {
+            float: left;
+        }
+
+        .row {
+            display: flex;
+            padding: 10px;
+        }
+
+        .col {
+            flex: 50%;
+            padding: 0px 17px;
+        }
+
+        .form {
+            width: 90%;
+            position: relative;
+            height: 50px;
+            overflow: hidden;
+            display: inline-block;
+        }
+
+        .form input {
+            width: 100%;
+            height: 100%;
+            color:rgb(228, 228, 33);
+            padding-top: 15px;
+            border: none;
+            outline: none;
+            background-color: #CF1B1B;
+        }
+
+        .form label {
+            position: absolute;
+            bottom: 0px; 
+            left: 0%;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            border-bottom: 1px solid aliceblue;
+        }
+
+        .form label::after {
+            content: "";
+            position: absolute;
+            left: 0px;
+            bottom: -1px;
+            height: 100%;
+            width: 100%;
+            border-bottom: 3px solid  rgb(228, 228, 33);
+            transform: translateX(-100%);   
+            transition: transform 0.3s ease;
+        }
+
+        .content-name {
+            position: absolute;
+            bottom: 5px;
+            left: 0px;
+            transition: all 0.3s, ease;
+            color: aliceblue;
+        }
+
+        .form input:focus + .label-name .content-name, 
+        .form input:valid + .label-name .content-name {
+            transform: translateY(-150%);
+            font-size: 14px;
+            color:rgb(228, 228, 33)
+        }
+
+        .form input:focus .label-name::after,
+        .form input:valid + .label-name::after {
+            transform: translateX(0%);
+        }
+        
+        .btn_signup {
+            margin-left: 0px;
+            padding: 9px 25px;
+            background-color:  rgb(228, 228, 33);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease 0s;
+            color: #CF1B1B;
+            font-size: 16px;
+            font-family: "Roboto";
+            display: block;
+            margin-left:auto;
+            margin-right:auto;
+        }
+
+        .btn_signup:hover {
+            background-color: aliceblue;
+        }
+
+        .content-name-fecha {
+            transform: translateY(-150%);
+            font-size: 14px;
+            color: aliceblue;
+        }
+
+
+
+    </style>
+    <body>
+        <img src="/static/logo.png" width="400" height="200" style = "background-repeat: no-repeat; ">
+        <div class = "card">
+            <h1>Crear un nuevo Proyecto</h1>
+            <form method = "POST" action = "">
+                <div class="row">
+                    <div class = col>
+                        <div class = "form">
+                            <input type = "text" name = "name" autocomplete="off" required />
+                            <label for = "name" class = "label-name">
+                                <span class = "content-name">Nombre del Proyecto</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class = "col">
+                        <div class = "form">
+                            <input type = "text" name = "objetivo" autocomplete="off" required />
+                            <label for = "objetivo" class = "label-name">
+                                <span class = "content-name">Objetivo</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class = "row">
+                    <div class = "col">
+                        <div class = "form" style = "width: 96%;">
+                            <input type = "text" name = "descri" autocomplete="off" required />
+                            <label for = "descri" class = "label-name">
+                                <span class = "content-name">Descripción </span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class = "row">
+                    <div class = "col">
+                        <div class = "form">
+                            <input type = "date" name = "fecha" autocomplete="off" required />
+                            <label for = "fecha">
+                                <span class = "content-name-fecha">Fecha de terminación</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class = "col">
+                        <div class = "form">
+                            <input type = "text" name = "cupo" autocomplete="off" required />
+                            <label for = "cupo" class = "label-name">
+                                <span class = "content-name">Cupo</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                    <button type = "submit" class = "btn_signup">Crear proyecto</button>
+                <br>
+            </form>
+        </div>
+    </body>
+</html>
